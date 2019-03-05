@@ -1,0 +1,12 @@
+version: "3"
+services:
+    jupyter:
+        image: jupyter/scipy-notebook
+        container_name: "my_jupyter"
+        ports:
+            - 8888:8888
+    postgres:
+        image: postgres
+        container_name: "my_postgres"
+        ports:
+            - 5432:5432
