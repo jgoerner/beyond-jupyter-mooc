@@ -1,0 +1,18 @@
+version: "3"
+services:
+    jupyter:
+        image: jupyter/scipy-notebook
+        ports:
+            - 8888:8888
+    minio:
+        image: minio/minio
+        ports:
+            - 9000:9000
+        volumes:
+            - mn_vol:/data
+        environment:
+            - MINIO_ACCESS_KEY=12345678
+            - MINIO_SECRET_KEY=password
+        command: server /data
+volumes:
+    mn_vol:
