@@ -1,0 +1,32 @@
+version: "3"
+services:
+    jupyter:
+        image: jupyter/scipy-notebook
+        container_name: "my_jupyter"
+        ports:
+            - 8888:8888
+    superset:
+        image: tylerfowler/superset
+        ports:
+            - 8088:8088
+    postgres:
+        image: postgres
+        container_name: "my_postgres"
+        ports:
+            - 5432:5432
+        environment:
+            - SHARED_PASSWORD=password
+            - POSTGRES_PASSWORD=secret
+        volumes:
+            - ./scripts/:/docker-entrypoint-initdb.d/
+            - pg_data:/var/lib/postgresql/data
+    minio:
+        image: minio/minio
+        ports:
+            - 9000:9000
+        environment:
+            - MINIO_ACCESS_KEY=12345678
+            - MINIO_SECRET_KEY=password
+        command: server /data
+volumes:
+    pg_data:
