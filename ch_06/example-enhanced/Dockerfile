@@ -16,7 +16,8 @@ RUN pip install --no-cache-dir \
     minio===4.0.0 \
     psycopg2-binary===2.7.4 \
     scipy \
-    scikit-learn
+    scikit-learn \
+    sqlalchemy
 
 RUN pip install --no-cache-dir --no-deps pandas
 
