@@ -5,11 +5,6 @@ import os
 from airflow import DAG
 from airflow.operators.python_operator import PythonOperator
 
-### TASK ###
-def log_hello_world():
-    # fetching the data
-    logging.info("Hello wonderful world!")
-
 ### DAG ###
 default_args={
         "owner":"airflow",
@@ -18,12 +13,16 @@ default_args={
         }
 
 dag = DAG(
-    dag_id="dag_hello_world",
+    dag_id="testing",
     default_args=default_args,
     schedule_interval=timedelta(seconds=30))
 
+### TASK ###
+def hello_world():
+    logging.info("Hello World from the Task")
+
 task = PythonOperator(
-    task_id="task_hello_world",
-    python_callable=log_hello_world,
+    task_id="testing-task",
+    python_callable=hello_world,
     dag=dag,
 )
