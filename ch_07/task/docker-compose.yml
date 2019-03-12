@@ -1,0 +1,46 @@
+version: "3"
+services:
+    jupyter:
+        image: jupyter/scipy-notebook
+        container_name: "my_jupyter"
+        ports:
+            - 8888:8888
+    postgres:
+        image: postgres
+        container_name: "my_postgres"
+        ports:
+            - 5432:5432
+        environment:
+            - SHARED_PASSWORD=password
+            - POSTGRES_PASSWORD=secret
+        volumes:
+            - ./scripts/:/docker-entrypoint-initdb.d/
+            - pg_data:/var/lib/postgresql/data
+    minio:
+        image: minio/minio
+        ports:
+            - 9000:9000
+        environment:
+            - MINIO_ACCESS_KEY=12345678
+            - MINIO_SECRET_KEY=password
+        volumes:
+            - mn_data:/data
+        command: server /data
+    airflow:
+        image: puckel/docker-airflow
+        restart: always
+        depends_on:
+            - postgres
+        volumes:
+            - ./dag:/usr/local/airflow/dags
+            - ./requirements.txt:/requirements.txt
+        environment:
+            - LOAD_EX=n
+            - EXECUTOR=Local
+        ports:
+            - 8080:8080
+        command: webserver
+
+volumes:
+    pg_data:
+    mn_data:
